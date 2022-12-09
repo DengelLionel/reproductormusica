@@ -21,7 +21,12 @@
 				<td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
 					<span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
 					<a href="{{route('artista.edit',['artistum'=>$artist->id])}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">Edit</a>
+					<form action="{{route('artista.destroy',['artistum'=>$artist->id])}}" method="POST">
+					@csrf
+					@method('DELETE')
 					<button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">Delete</button>
+					</form>
+					
 				</td>
 			</tr>
             @endforeach

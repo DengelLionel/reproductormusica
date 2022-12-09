@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Auth;
 return new class extends Migration
 {
     /**
@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('song_id')->references('id')->on('songs')->onDelete('cascade');
             $table->boolean('liked');
-            $table->integer('play_count');
+            $table->integer('play_count')->default(0);
             $table->timestamps();
 
         });

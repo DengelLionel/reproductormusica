@@ -96,8 +96,9 @@ class ArtistaController extends Controller
      * @param  \App\Models\Artists  $artists
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Artists $artists)
+    public function destroy(Artists $artistum)
     {
-        //
+        $artistum->delete();
+        return redirect()->route('artista.index');
     }
 }

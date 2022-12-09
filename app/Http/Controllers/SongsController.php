@@ -19,17 +19,18 @@ class SongsController extends Controller
      */
     public function index()
     {
-        $cancion=Songs::join('albums','songs.album_id','=','albums.id')
+        $canciones=Songs::join('albums','songs.album_id','=','albums.id')
             ->join('artists','songs.artist_id','=','artists.id')
             ->join('playlist_songs','songs.id','=','playlist_songs.song_id')
             ->join('playlists','playlist_songs.playlist_id','=','playlists.id')
-            ->join('interactions','songs.id','=','interactions.song_id')
-                ->select('albums.name as namealbum','albums.cover','artists.name as nameartist','songs.path','songs.id as songid','playlists.name as playlistname',Artists::raw('SUM(interactions.play_count) as playc'))->groupBy('songs.id','playlists.id');
-            $canciones=$cancion->get();  
+            
+                ->select('albums.name as namealbum','albums.cover','artists.name as nameartist','songs.path','songs.id as songid','songs.title as songname','playlists.name as playlistname')->groupBy('songs.id','playlists.id')->get();
+               /*  ,Interactions::raw('SUM(interactions.play_count) as playc') */
         $album=Albums::all();
         $artist=Artists::all();
         $interaction=Interactions::all();
-       return view('canciones.index',compact('album','artist','canciones','interaction'));
+      $songsList=Songs::all();
+       return view('canciones.index',compact('album','artist','canciones','interaction','songsList'));
     }
 
     /**
@@ -80,9 +81,11 @@ class SongsController extends Controller
      * @param  \App\Models\Songs  $songs
      * @return \Illuminate\Http\Response
      */
-    public function edit(Songs $songs)
+    public function edit(Songs $cancione)
     {
-        //
+        $album=Albums::all();
+        $artist=Artists::all();
+        return view('canciones.edit',compact('cancione','album','artist'));
     }
 
     /**
@@ -92,9 +95,20 @@ class SongsController extends Controller
      * @param  \App\Models\Songs  $songs
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Songs $songs)
+    public function update(SongsRequest $request, Songs $cancione)
     {
-        //
+        $cancione->fill($request->validated());
+        if($audioCancion=$request->file('path')){
+            $rutaCancion='path/';
+            $CancionText=date('YmdHis').'.'.$audioCancion->getClientOriginalExtension();
+            $audioCancion->move($rutaCancion,$CancionText);
+            $datosGenerales['path']="$CancionText";
+           }
+           $datosModify=$request->only(['length']);
+           $cancione['length']=floatval($datosModify['length']);
+          $cancione->save();
+           return redirect()->route('canciones.index');
+
     }
 
     /**
@@ -105,17 +119,9 @@ class SongsController extends Controller
      */
     public function destroy(Songs $cancione)
     {
-        $cancion=Songs::join('albums','songs.album_id','=','albums.id')
-        ->join('artists','songs.artist_id','=','artists.id')
-        ->join('playlist_songs','songs.id','=','playlist_songs.song_id')
-        ->join('playlists','playlist_songs.playlist_id','=','playlists.id')
-        ->join('interactions','songs.id','=','interactions.song_id')
-            ->select('albums.name as namealbum','albums.cover','artists.name as nameartist','songs.path','songs.id as songid','playlists.name as playlistname',Artists::raw('SUM(interactions.play_count) as playc'))->groupBy('songs.id','playlists.id');
-        $canciones=$cancion->get();
-        if($canciones->songid!==$cancione){
             $cancione->delete();
-        }
        
+       return redirect()->route('canciones.index');
     }
 }
 

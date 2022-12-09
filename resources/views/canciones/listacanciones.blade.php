@@ -1,11 +1,11 @@
 <div>
-<h2 class="font-bold text-red-500">Lista canciones</h2>
+<h2 class="font-bold text-red-500">Lista canciones - Playlist - Interactions</h2>
 
 <!-- component -->
 <section class="antialiased bg-gray-100 text-gray-600 h-screen px-4">
     <div class="flex flex-col justify-center h-full">
         <!-- Table -->
-        <div class="w-full max-w-4xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
+        <div class="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
             <header class="px-5 py-4 border-b border-gray-100">
                 <h2 class="font-semibold text-gray-800">Canciones</h2>
             </header>
@@ -14,6 +14,9 @@
                     <table class="table-auto w-full">
                         <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
                             <tr>
+                            <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-left">ID SONG</div>
+                                </th>
                                 <th class="p-2 whitespace-nowrap">
                                     <div class="font-semibold text-left">Artista</div>
                                 </th>
@@ -32,7 +35,9 @@
                         <tbody class="text-sm divide-y divide-gray-100">
                             @foreach($canciones as $item)
                             <tr>
-                               
+                            <td class="p-2 whitespace-nowrap">
+                                    <div class="text-left">{{$item->songid}}</div>
+                                </td>
                                 <td class="p-2 whitespace-nowrap">
                                     <div class="text-left">{{$item->nameartist}}</div>
                                 </td>
@@ -54,11 +59,11 @@
                                         
                                         
                                        
-                                        LIKED: {{$item->playc}}
+                                        LIKED: 
                                          </span>
                                         <span class="bg-red-600 text-white text-lg font-medium rounded-tl-lg rounded-tr-lg rounded-br-lg rounded-bl-lg p-2">
     
-                                            Play count: {{$item->playc}}  </span>
+                                            Play count:  </span>
                                        </article>
                                         
                                         
@@ -113,6 +118,7 @@
                                 </td>
                                 <td>
                                     <button>
+                                        <p>{{$item->songname}}</p>
                                         <audio controls>
                                             <source src="path/{{$item->path}}" type="audio/mp3">
                                         </audio>
@@ -124,12 +130,13 @@
                                 </td>
                                 <td>
                                     <p>Eliminar si no tiene playlist</p>
-                                    <form action="{{route('canciones.destroy',['cancione'=>$item->songid])}}">
+                                    <form action="{{route('canciones.destroy',['cancione'=>$item->songid])}}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                 <button type="submit" class="p-[8px] bg-red-700 font-bold text-white">Eliminar</button>
                                 </form>
                                 </td>
+                                
                             </tr>
                             @endforeach
                         </tbody>
@@ -141,3 +148,107 @@
 </section>
 </div>
    
+
+
+
+
+
+<div>
+<h2 class="font-bold text-red-500">Lista canciones </h2>
+
+<!-- component -->
+<section class="antialiased bg-gray-100 text-gray-600 h-screen px-4">
+    <div class="flex flex-col justify-center h-full">
+        <!-- Table -->
+        <div class="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
+            <header class="px-5 py-4 border-b border-gray-100">
+                <h2 class="font-semibold text-gray-800">Canciones</h2>
+            </header>
+            <div class="p-3">
+                <div class="">
+                    <table class="table-auto w-full">
+                        <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                            <tr>
+                            <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-left">ID SONG</div>
+                                </th>
+                                <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-left">Title song</div>
+                                </th>
+                                <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-left">Lyrics</div>
+                                </th>
+                                <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-left">Audio</div>
+                                </th>
+                               
+
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm divide-y divide-gray-100">
+                            @foreach($songsList as $item)
+                            <tr>
+                            <td class="p-2 whitespace-nowrap">
+                                    <div class="text-left">{{$item->id}}</div>
+                                </td>
+                                <td class="p-2 whitespace-nowrap">
+                                    <div class="text-left">{{$item->title}}</div>
+                                </td>
+                              
+                                <td class="p-2 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        
+                                        <div class="font-medium text-gray-800">{{$item->lyrics}}</div>
+                                    </div>
+                                </td>
+                              
+                                
+                                <td>
+                                    <button>
+                                   
+                                        <audio controls>
+                                            <source src="path/{{$item->path}}" type="audio/mp3">
+                                        </audio>
+                                   
+                                    </button>
+                                   
+                                    
+                                     <!-- FIN INTERACCIONES -->
+                                </td>
+                                <td>
+                                    <a href="{{route('canciones.edit',['cancione'=>$item->id])}}">Editar</a>
+                                </td>
+                                <td>
+
+                                    <p>Eliminar</p>
+                                    <form action="{{route('canciones.destroy',['cancione'=>$item->id])}}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                <button type="submit" class="p-[8px] bg-red-700 font-bold text-white">Eliminar</button>
+                                </form>
+                                </td>
+                                
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+   
+
+
+
+
+
+
+
+   
+
+
+
+   
+

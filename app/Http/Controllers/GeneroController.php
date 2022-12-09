@@ -100,8 +100,9 @@ class GeneroController extends Controller
      * @param  \App\Models\Albums  $albums
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Albums $albums)
+    public function destroy(Albums $genero)
     {
-        //
+    $genero->delete();
+    return redirect()->route('genero.index');
     }
 }

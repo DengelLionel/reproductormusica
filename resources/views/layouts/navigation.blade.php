@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('canciones.index') }}">
-                    <img class="w-[40px] h-[40px] rounded-tr-xl rounded-tl-xl rounded-br-xl rounded-bl-xl" src="https://yt3.ggpht.com/ygDIu8wyBJaFnMXgYFv-iX-ZyYsYqxlAk7Kz1YJwu4n1hW23OLSazgBWzV3JOhmS_TOFr8EWoQ=s900-c-k-c0x00ffffff-no-rj" alt="">
+                    <img class="w-[40px] h-[40px] rounded-tr-xl rounded-tl-xl rounded-br-xl rounded-bl-xl" src="https://images.macrumors.com/t/hi1_a2IdFGRGMsJ0x31SdD_IcRk=/1600x/article-new/2018/05/apple-music-note.jpg" alt="">
                     </a>
                 </div>
 
