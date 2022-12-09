@@ -21,8 +21,6 @@ class SongsController extends Controller
     {
         $cancion=Songs::join('albums','songs.album_id','=','albums.id')
             ->join('artists','songs.artist_id','=','artists.id')
-            /* ->join('playlist_songs','songs.id','=','playlist_songs.id')
-            */
             ->join('playlist_songs','songs.id','=','playlist_songs.song_id')
             ->join('playlists','playlist_songs.playlist_id','=','playlists.id')
             ->join('interactions','songs.id','=','interactions.song_id')
