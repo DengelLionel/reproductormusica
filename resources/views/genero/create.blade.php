@@ -32,7 +32,8 @@
 				@csrf
 				<div class="">
 					<input class=" w-full text-sm  px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-purple-400 mb-[10px]" name="name" type="text" placeholder="Nombre">
-                   <select class=" w-full text-sm  px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-purple-400" name="artist_id" id="">
+				<label >Artista</label>
+					<select class=" w-full text-sm  px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-purple-400" name="artist_id" id="">
                     @foreach($artista as $item)
                     <option value="{{$item->id}}">{{$item->name}}</option>
                     @endforeach

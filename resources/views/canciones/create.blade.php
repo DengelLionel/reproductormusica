@@ -32,13 +32,13 @@
 				@csrf
 
 				<div class="">
-               
+				<label>Interprete</label>
                 <select class=" w-full text-sm  px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-purple-400 mb-[10px]" name="album_id" id="">
                     @foreach($album as $item)
                     <option value="{{$item->id}}">{{$item->name}}</option>
                     @endforeach
                    </select>
-
+				   <label>Género</label>
                    <select class=" w-full text-sm  px-4 py-3 bg-gray-200 focus:bg-gray-100 border  border-gray-200 rounded-lg focus:outline-none focus:border-purple-400 mb-[10px]" name="artist_id" id="">
                     @foreach($artist as $item)
                     <option value="{{$item->id}}">{{$item->name}}</option>

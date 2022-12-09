@@ -6,6 +6,7 @@ use App\Http\Requests\SongsRequest;
 use App\Models\Albums;
 use App\Models\Artists;
 use App\Models\Interactions;
+use App\Models\Playlist_song;
 use App\Models\Songs;
 use Illuminate\Http\Request;
 
@@ -18,44 +19,15 @@ class SongsController extends Controller
      */
     public function index()
     {
-        $canciones=Songs::join('albums','songs.id','=','albums.id')
-            ->join('artists','songs.id','=','artists.id')
+        $cancion=Songs::join('albums','songs.album_id','=','albums.id')
+            ->join('artists','songs.artist_id','=','artists.id')
             /* ->join('playlist_songs','songs.id','=','playlist_songs.id')
-            ->join('playlists','playlist_songs.playlist_id','=','playlists.id') */
+            */
+            ->join('playlist_songs','songs.id','=','playlist_songs.song_id')
+            ->join('playlists','playlist_songs.playlist_id','=','playlists.id')
             ->join('interactions','songs.id','=','interactions.song_id')
-                ->select('albums.name as namealbum','albums.cover','artists.name as nameartist','songs.path','songs.id as songid')->get();
-              /*   ,'playlists.name as playname','interactions.liked as like','interactions.play_count as count','interactions.song_id as interid' */
-          /*   $collection=collect($canciones); */
-
-          /*  $mapeado=$collection->map(function ($i){
-            $datos=[];
-            $likeTotal=0;
-            $totalGeneralLike=0;
-            $countTotal=0;
-            $totalGeneralCount=0;
-          
-          
-            $totalGeneralLike=$likeTotal+=$i->like;
-            $totalGeneralCount=$countTotal+=$i->count;
-            
-            $datos[]=[
-                "namealbum"=>$i->namealbum,
-                "artist_id"=>$i->artist_id,
-                "album_id"=>$i->album_id,
-                "cover"=>$i->cover,
-                "nameartist"=>$i->nameartist,
-                "path"=>$i->path,
-                "songid"=>$i->songid,
-                "playname"=>$i->playname,
-                "like"=>$i->songid==$i->interid?$totalGeneralLike+=$i->like:"hola", 
-                 "count"=>$i->songid==$i->interid?$totalGeneralCount+=$i->count:"hola" 
-
-            ];
-            return $datos;
-           }); */
-                /* dd($mapeado); */
-           
-            
+                ->select('albums.name as namealbum','albums.cover','artists.name as nameartist','songs.path','songs.id as songid','playlists.name as playlistname',Artists::raw('SUM(interactions.play_count) as playc'))->groupBy('songs.id','playlists.id');
+            $canciones=$cancion->get();  
         $album=Albums::all();
         $artist=Artists::all();
         $interaction=Interactions::all();
@@ -133,9 +105,19 @@ class SongsController extends Controller
      * @param  \App\Models\Songs  $songs
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Songs $songs)
+    public function destroy(Songs $cancione)
     {
-        //
+        $cancion=Songs::join('albums','songs.album_id','=','albums.id')
+        ->join('artists','songs.artist_id','=','artists.id')
+        ->join('playlist_songs','songs.id','=','playlist_songs.song_id')
+        ->join('playlists','playlist_songs.playlist_id','=','playlists.id')
+        ->join('interactions','songs.id','=','interactions.song_id')
+            ->select('albums.name as namealbum','albums.cover','artists.name as nameartist','songs.path','songs.id as songid','playlists.name as playlistname',Artists::raw('SUM(interactions.play_count) as playc'))->groupBy('songs.id','playlists.id');
+        $canciones=$cancion->get();
+        if($canciones->songid!==$cancione){
+            $cancione->delete();
+        }
+       
     }
 }
 

@@ -5,12 +5,12 @@
 <section class="antialiased bg-gray-100 text-gray-600 h-screen px-4">
     <div class="flex flex-col justify-center h-full">
         <!-- Table -->
-        <div class="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
+        <div class="w-full max-w-4xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
             <header class="px-5 py-4 border-b border-gray-100">
                 <h2 class="font-semibold text-gray-800">Canciones</h2>
             </header>
             <div class="p-3">
-                <div class="overflow-x-auto">
+                <div class="">
                     <table class="table-auto w-full">
                         <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
                             <tr>
@@ -45,6 +45,7 @@
                                 </td>
                                 <td class="p-2 whitespace-nowrap">
                                     <div class="text-left font-medium text-green-500"></div>
+                                    {{$item->playlistname}}
                                 </td>
                                 <td class="p-2 whitespace-nowrap">
                                     <div class="text-lg text-center ">
@@ -53,11 +54,11 @@
                                         
                                         
                                        
-                                        LIKED:
+                                        LIKED: {{$item->playc}}
                                          </span>
                                         <span class="bg-red-600 text-white text-lg font-medium rounded-tl-lg rounded-tr-lg rounded-br-lg rounded-bl-lg p-2">
     
-                                            Play count:  </span>
+                                            Play count: {{$item->playc}}  </span>
                                        </article>
                                         
                                         
@@ -117,8 +118,17 @@
                                         </audio>
                                    
                                     </button>
+                                   
                                     
                                      <!-- FIN INTERACCIONES -->
+                                </td>
+                                <td>
+                                    <p>Eliminar si no tiene playlist</p>
+                                    <form action="{{route('canciones.destroy',['cancione'=>$item->songid])}}">
+                                        @csrf
+                                        @method('DELETE')
+                                <button type="submit" class="p-[8px] bg-red-700 font-bold text-white">Eliminar</button>
+                                </form>
                                 </td>
                             </tr>
                             @endforeach
